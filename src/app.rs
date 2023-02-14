@@ -12,7 +12,7 @@ pub fn App(cx: Scope) -> impl IntoView {
 
         // injects a stylesheet into the document <head>
         // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/leptos_start.css"/>
+        <Stylesheet id="leptos" href="/pkg/pokeflip-leptos.css"/>
 
         // sets the document title
         <Title text="Welcome to Leptos"/>
@@ -32,6 +32,8 @@ pub fn App(cx: Scope) -> impl IntoView {
 #[component]
 fn HomePage(cx: Scope) -> impl IntoView {
     view! { cx,
-        <h1>"Poke Flip"</h1>
+        <div class="w-screen flex flex-col items-center">
+            <h1 class="text-4xl">"Poke Flip"</h1>
+        </div>
     }
 }
