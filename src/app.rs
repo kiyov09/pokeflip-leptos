@@ -15,7 +15,9 @@ pub fn App(cx: Scope) -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/pokeflip-leptos.css"/>
 
         // sets the document title
-        <Title text="Welcome to Leptos"/>
+        <Title text="Poke Flip Game"/>
+        <Meta name="description" content="A simple memory game"/>
+        <Meta name="viewport" content="width=device-width, initial-scale=1"/>
 
         // content for this welcome page
         <Router>
