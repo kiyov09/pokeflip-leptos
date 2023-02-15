@@ -32,8 +32,29 @@ pub fn App(cx: Scope) -> impl IntoView {
 #[component]
 fn HomePage(cx: Scope) -> impl IntoView {
     view! { cx,
-        <div class="w-screen flex flex-col items-center">
-            <h1 class="text-4xl">"Poke Flip"</h1>
+        <div class="w-screen h-screen flex flex-col items-center py-12 bg-gradient-to-br from-blue-700 to-blue-500">
+            <h1 class="text-7xl font-pokemon text-yellow-header drop-shadow-header tracking-wider">"Poke Flip"</h1>
+            <CardsGrid />
         </div>
+    }
+}
+
+#[component]
+fn CardsGrid(cx: Scope) -> impl IntoView {
+    let cards_range = 0..16;
+    view! { cx,
+        <div class="flex-1 grid grid-cols-4 gap-4 mt-8">
+            {cards_range.map(|_| view ! {
+                cx,
+                <Card />
+            }).collect::<Vec<_>>()}
+        </div>
+    }
+}
+
+#[component]
+fn Card(cx: Scope) -> impl IntoView {
+    view! { cx,
+        <div class="w-40 h-full bg-gray-200 rounded-lg"></div>
     }
 }
