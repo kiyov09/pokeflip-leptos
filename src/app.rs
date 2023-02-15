@@ -56,7 +56,35 @@ fn CardsGrid(cx: Scope) -> impl IntoView {
 
 #[component]
 fn Card(cx: Scope) -> impl IntoView {
+    let (flipped, set_flipped) = create_signal(cx, false);
+
+    let toggle_flipped = move |_| set_flipped(!flipped());
+
     view! { cx,
-        <div class="w-40 h-full bg-gray-200 rounded-lg"></div>
+        <div
+            class="relative w-40 h-full rounded-md hover:cursor-pointer hover:scale-105
+                   transition-transform duration-300 overflow-hidden shadow-md
+                   [perspective:1000px]"
+            on:click=toggle_flipped
+        >
+            <div
+                class="h-full w-full transition-transform duration-500 [transform-style:preserve-3d]"
+                class=("[transform:rotateY(180deg)]", flipped)
+            >
+                // Back side of the card
+                <div class="absolute w-full h-full bg-blue-700 border-solid border-white border-4 rounded-lg [backface-visibility:hidden]">
+                    <img
+                        src="/images/poke_ball.png"
+                        alt="Pokeball"
+                        class="w-auto h-full aspect-square object-contain"
+                    />
+                </div>
+                // Front side of the card
+                <div
+                    class="absolute w-full h-full bg-blue-100 border-solid border-white
+                           border-4 rounded-lg [backface-visibility:hidden] [transform:rotateY(180deg)]"
+                ></div>
+            </div>
+        </div>
     }
 }
