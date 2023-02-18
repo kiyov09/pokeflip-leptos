@@ -7,3 +7,10 @@
     src: url("//db.onlinewebfonts.com/t/a222402127a0453c817a6cf4c3d9810b.eot");
     src: url("//db.onlinewebfonts.com/t/a222402127a0453c817a6cf4c3d9810b.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/a222402127a0453c817a6cf4c3d9810b.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/a222402127a0453c817a6cf4c3d9810b.woff") format("woff"), url("//db.onlinewebfonts.com/t/a222402127a0453c817a6cf4c3d9810b.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/a222402127a0453c817a6cf4c3d9810b.svg#Pokemon") format("svg");
 }
+
+html, body {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    max-height: -webkit-fill-available;
+}
