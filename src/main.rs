@@ -5,6 +5,7 @@ async fn main() -> std::io::Result<()> {
     use actix_web::*;
     use leptos::*;
     use leptos_actix::{generate_route_list, LeptosRoutes};
+    use pokeflip_leptos::api::register_server_functions;
     use pokeflip_leptos::app::*;
 
     register_server_functions();
