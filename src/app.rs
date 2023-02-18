@@ -28,7 +28,7 @@ pub fn PokeflipApp(cx: Scope) -> impl IntoView {
         <Router>
             <main>
                 <Routes>
-                    <Route path="" view=|cx| view! { cx, <HomePage/> }/>
+                    <Route path="" view=|cx| view! { cx, <MainPage /> }/>
                 </Routes>
             </main>
         </Router>
@@ -37,7 +37,7 @@ pub fn PokeflipApp(cx: Scope) -> impl IntoView {
 
 /// Renders the home page of your application.
 #[component]
-pub fn HomePage(cx: Scope) -> impl IntoView {
+pub fn MainPage(cx: Scope) -> impl IntoView {
     let (game, set_game) = create_signal(cx, Game::new(cx));
 
     provide_context(cx, set_game);
