@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::api::get_poke_cards;
 
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Pokemon {
     pub name: String,
     pub url: String,
@@ -24,7 +24,8 @@ impl Pokemon {
     }
 }
 
-#[derive(Debug, Clone)]
+// #[derive(Debug, Clone)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct PokeCard {
     pub poke: Pokemon,
     pub id: ReadSignal<u8>,
@@ -44,16 +45,16 @@ impl PokeCard {
 
 #[derive(Clone)]
 pub struct Game {
-    pub poke_cards: Resource<bool, Vec<PokeCard>>,
+    pub poke_cards: Resource<(), Vec<PokeCard>>,
+    cx: Scope,
 }
 
 impl Game {
     pub fn new(cx: Scope) -> Self {
-        let done = create_rw_signal(cx, true);
-        let poke_cards = create_local_resource(cx, done, move |_| get_poke_cards(cx));
+        let poke_cards = create_local_resource(cx, move || (), move |_| get_poke_cards(cx));
 
         create_effect(cx, move |_| {
-            poke_cards.with(|cards| {
+            poke_cards.with(cx, |cards| {
                 let flipped_cards = cards
                     .iter()
                     .filter(|card| card.flipped.get())
@@ -77,7 +78,7 @@ impl Game {
         });
 
         create_effect(cx, move |_| {
-            poke_cards.with(|cards| {
+            poke_cards.with(cx, |cards| {
                 if cards.iter().all(|card| card.flipped.get()) {
                     set_timeout(
                         move || poke_cards.refetch(),
@@ -87,13 +88,13 @@ impl Game {
             })
         });
 
-        Self { poke_cards }
+        Self { poke_cards, cx }
     }
 
     pub fn flip_card(&self, id: u8) {
         if let Some(card) = self
             .poke_cards
-            .read()
+            .read(self.cx)
             .unwrap_or(vec![])
             .iter()
             .find(|c| c.id.get() == id)

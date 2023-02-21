@@ -28,7 +28,7 @@ pub fn PokeflipApp(cx: Scope) -> impl IntoView {
         <Router>
             <main class="w-full h-full">
                 <Routes>
-                    <Route path="" view=|cx| view! { cx, <MainPage /> }/>
+                    <Route path="" view=move |cx| view! { cx, <MainPage /> }/>
                 </Routes>
             </main>
         </Router>
@@ -43,11 +43,9 @@ pub fn MainPage(cx: Scope) -> impl IntoView {
     provide_context(cx, set_game);
     provide_context(cx, game);
 
-    let poke_cards = move || game.get().poke_cards;
-
+    let poke_cards = move || game.with(|game| game.poke_cards);
     let poke_cards_view = move || {
-        poke_cards().with(|cards| {
-            let cards = cards.clone();
+        poke_cards().read(cx).map(|cards| {
             view! { cx,
                 <div class="flex-1 mt-8 w-full max-w-2xl px-4">
                     <CardsGrid>
@@ -71,7 +69,11 @@ pub fn MainPage(cx: Scope) -> impl IntoView {
     view! { cx,
         <div class="w-full h-full flex flex-col items-center py-12 bg-gradient-to-br from-blue-700 to-blue-500">
             <h1 class="text-5xl md:text-7xl font-pokemon text-yellow-header drop-shadow-header tracking-wider">"Poke Flip"</h1>
+            <Transition
+                fallback=move || view!{ cx, <p>"Loading cards..."</p>}
+            >
                 { poke_cards_view }
+            </Transition>
         </div>
     }
 }
